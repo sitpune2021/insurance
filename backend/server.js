@@ -38,7 +38,7 @@ app.use(
 // });
 
 const db = mysql.createConnection({
-  host: "103.165.118.71",
+  host: "103.165.119.60",
   user: "sitsolutionsco_insurance_db",
   password: "insurance_db@2024#",
   database: "sitsolutionsco_insurance_db",
