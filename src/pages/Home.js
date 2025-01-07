@@ -14,7 +14,7 @@ function Home() {
     const fetchAppointments = async () => {
       try {
         const response = await axios.get(
-          "http://103.165.118.71:3005/getlatestappointments",
+          "http://localhost:3005/getlatestappointments",
           { withCredentials: true }
         );
         setAppointments(response.data); // Set the latest appointments in state
@@ -27,7 +27,7 @@ function Home() {
     const fetchAppointmentCount = async () => {
       try {
         const response = await axios.get(
-          "http://103.165.118.71:3005/getAppointmentCount",
+          "http://localhost:3005/getAppointmentCount",
           { withCredentials: true }
         );
         setAppointmentCount(response.data); // Set the appointment count in state
@@ -180,12 +180,12 @@ function Home() {
                     <h2>
                       <span className="counter-up">{appointmentCount}</span>
                     </h2>
-                    <p>
+                    {/* <p>
                       <span className="passive-view">
                         <i className="feather-arrow-up-right me-1"></i>40%
                       </span>{" "}
                       vs last month
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </div>
@@ -195,16 +195,16 @@ function Home() {
                     <img src="assets/img/icons/profile-add.svg" alt="" />
                   </div>
                   <div className="dash-content dash-count">
-                    <h4>New Patients</h4>
+                    <h4>Captive Client</h4>
                     <h2>
                       <span className="counter-up">0</span>
                     </h2>
-                    <p>
+                    {/* <p>
                       <span className="passive-view">
                         <i className="feather-arrow-up-right me-1"></i>20%
                       </span>{" "}
                       vs last month
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </div>
@@ -214,16 +214,16 @@ function Home() {
                     <img src="assets/img/icons/scissor.svg" alt="" />
                   </div>
                   <div className="dash-content dash-count">
-                    <h4>Operations</h4>
+                    <h4>TPA Client</h4>
                     <h2>
-                      <span className="counter-up">0</span>
+                      <span>0</span>
                     </h2>
-                    <p>
+                    {/* <p>
                       <span className="negative-view">
                         <i className="feather-arrow-down-right me-1"></i>15%
                       </span>{" "}
                       vs last month
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </div>
@@ -232,17 +232,17 @@ function Home() {
                   <div className="dash-boxs comman-flex-center">
                     <img src="assets/img/icons/empty-wallet.svg" alt="" />
                   </div>
-                  <div className="dash-content dash-count">
-                    <h4>Earnings</h4>
+                  <div className="">
+                    <h4>Assigned Appointment</h4>
                     <h2>
-                      Rs.<span className="counter-up"> 0.00</span>
+                      <span className="counter-up">0</span>
                     </h2>
-                    <p>
+                    {/* <p>
                       <span className="passive-view">
                         <i className="feather-arrow-up-right me-1"></i>30%
                       </span>{" "}
                       vs last month
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </div>
@@ -252,7 +252,7 @@ function Home() {
                 <div className="card">
                   <div className="card-header pb-0">
                     <h4 className="card-title d-inline-block">
-                      Recent Patients{" "}
+                      Today Patients{" "}
                     </h4>{" "}
                     <Link
                       to="patients.html"

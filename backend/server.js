@@ -9,8 +9,8 @@ const ExcelJS = require("exceljs");
 const app = express();
 app.use(
   cors({
-    origin: ["http://103.165.118.71:3000"],
-    // origin: ["http://localhost:3000"],
+    // origin: ["http://103.165.119.60:3000"],
+    origin: ["http://localhost:3000"],
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })
@@ -30,20 +30,19 @@ app.use(
   })
 );
 
-// const db = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "",
-//   database: "insuerence",
-// });
-
 const db = mysql.createConnection({
-  host: "103.165.119.60",
-  user: "sitsolutionsco_insurance_db",
-  password: "insurance_db@2024#",
-  database: "sitsolutionsco_insurance_db",
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "insuerence",
 });
 
+// const db = mysql.createConnection({
+//   host: "103.165.119.60",
+//   user: "sitsolutionsco_insurance_db",
+//   password: "insurance_db@2024#",
+//   database: "sitsolutionsco_insurance_db",
+// });
 
 app.get("/getallappointment", (req, res) => {
   const sql = "SELECT * FROM appointment";
@@ -52,6 +51,7 @@ app.get("/getallappointment", (req, res) => {
       res.json("Fail to fetch");
     }
     return res.send(data);
+    f;
   });
 });
 
@@ -146,6 +146,94 @@ app.get("/getAppointmentById/:id", (req, res) => {
     }
     res.json(data[0]);
   });
+});
+
+app.post("/addAppointment", (req, res) => {
+  console.log("Request body:", req.body);
+
+  const {
+    name,
+    date_,
+    time_,
+    treatment,
+    mobileno,
+    appointment_no,
+    country,
+    state,
+    city,
+    pincode,
+    address,
+    insurance_name,
+    tpa_details,
+  } = req.body;
+
+  if (
+    !name ||
+    !date_ ||
+    !time_ ||
+    !treatment ||
+    !mobileno ||
+    !appointment_no ||
+    !country ||
+    !state ||
+    !city ||
+    !pincode ||
+    !address ||
+    !insurance_name ||
+    !tpa_details
+  ) {
+    return res.status(400).json("All fields are required!");
+  }
+
+  const sql = `
+    INSERT INTO appointment
+    (name, date_, time_, treatment, mobileno, appointment_no, country, state, city, pincode, address, insurance_name, tpa_details) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+  console.log("SQL Query:", sql);
+  console.log("Values:", [
+    name,
+    date_,
+    time_,
+    treatment,
+    mobileno,
+    appointment_no,
+    country,
+    state,
+    city,
+    pincode,
+    address,
+    insurance_name,
+    tpa_details,
+  ]);
+
+  db.query(
+    sql,
+    [
+      name,
+      date_,
+      time_,
+      treatment,
+      mobileno,
+      appointment_no,
+      country,
+      state,
+      city,
+      pincode,
+      address,
+      insurance_name,
+      tpa_details,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("SQL Error:", err);
+        return res.status(500).json("Failed to add appointment");
+      }
+
+      console.log("SQL Result:", result);
+      return res.status(200).json("Appointment added successfully");
+    }
+  );
 });
 
 //Excel appointments
@@ -366,7 +454,12 @@ app.post("/addLaboratory", (req, res) => {
     email,
     username,
     password,
+    client_name, // New field
+    client_email, // New field
+    client_address, // New field
   } = req.body;
+
+  console.log("Received request to add laboratory:", req.body); // Log the incoming request
 
   if (
     !title ||
@@ -379,23 +472,30 @@ app.post("/addLaboratory", (req, res) => {
     !mobileno ||
     !email ||
     !username ||
-    !password
+    !password ||
+    !client_name || // Check for new fields
+    !client_email ||
+    !client_address
   ) {
+    console.log("Validation error: All fields are required");
     return res.status(400).json("All fields are required!");
   }
 
   const laboratorySql = `
-    INSERT INTO laboratory (title, country, state, city, pincode, address, name, mobileno, email, username, password)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO laboratory (title, country, state, city, pincode, address, name, mobileno, email, username, password, client_name, client_email, client_address)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
+  console.log("SQL Query for laboratory:", laboratorySql);
 
   const adminLoginSql = `
     INSERT INTO admin_login (token_key, name, email, username, password, post)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
+  console.log("SQL Query for admin login:", adminLoginSql);
 
   // Generate a random token_key
   const tokenKey = Math.random().toString(36).substr(2, 10);
+  console.log("Generated token key:", tokenKey);
 
   // Start a transaction to ensure data consistency
   db.beginTransaction((err) => {
@@ -419,14 +519,18 @@ app.post("/addLaboratory", (req, res) => {
         email,
         username,
         password,
+        client_name, // Pass new field
+        client_email, // Pass new field
+        client_address, // Pass new field
       ],
       (err, labResult) => {
         if (err) {
+          console.error("Error adding laboratory:", err);
           return db.rollback(() => {
-            console.error("Error adding laboratory:", err);
             res.status(500).json("Failed to add laboratory");
           });
         }
+        console.log("Laboratory added successfully:", labResult);
 
         // Insert into the admin_login table
         db.query(
@@ -434,21 +538,23 @@ app.post("/addLaboratory", (req, res) => {
           [tokenKey, name, email, username, password, "laboratory"],
           (err, adminResult) => {
             if (err) {
+              console.error("Error adding admin login:", err);
               return db.rollback(() => {
-                console.error("Error adding admin login:", err);
                 res.status(500).json("Failed to add admin login");
               });
             }
+            console.log("Admin login added successfully:", adminResult);
 
             // Commit the transaction
             db.commit((err) => {
               if (err) {
+                console.error("Commit Error:", err);
                 return db.rollback(() => {
-                  console.error("Commit Error:", err);
                   res.status(500).json("Failed to commit transaction");
                 });
               }
 
+              console.log("Transaction committed successfully");
               res
                 .status(201)
                 .json("Laboratory and Admin Login added successfully");
@@ -475,8 +581,12 @@ app.put("/updateLaboratory/:id", (req, res) => {
     email,
     username,
     password,
+    client_name,
+    client_email,
+    client_address,
   } = req.body;
 
+  // Validate that all required fields are provided
   if (
     !title ||
     !country ||
@@ -488,16 +598,27 @@ app.put("/updateLaboratory/:id", (req, res) => {
     !mobileno ||
     !email ||
     !username ||
-    !password
+    !password ||
+    !client_name ||
+    !client_email ||
+    !client_address
   ) {
     return res.status(400).json("All fields are required!");
   }
 
+  // Validate pincode
+  if (isNaN(pincode) || pincode.length !== 6) {
+    return res.status(400).json("Pincode must be a 6-digit number.");
+  }
+
   const sql = `
     UPDATE laboratory
-    SET title = ?, country = ?, state = ?, city = ?, pincode = ?, address = ?, name = ?, mobileno = ?, email = ?, username = ?, password = ?
+    SET title = ?, country = ?, state = ?, city = ?, pincode = ?, address = ?, 
+        name = ?, mobileno = ?, email = ?, username = ?, password = ?, 
+        client_name = ?, client_email = ?, client_address = ?
     WHERE lab_id = ?
   `;
+
   db.query(
     sql,
     [
@@ -512,6 +633,9 @@ app.put("/updateLaboratory/:id", (req, res) => {
       email,
       username,
       password,
+      client_name,
+      client_email,
+      client_address,
       id,
     ],
     (err, result) => {

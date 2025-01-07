@@ -1,5 +1,3 @@
-// Code by Prajwal Punekar
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -18,6 +16,9 @@ const EditLaboratory = () => {
     email: "",
     username: "",
     password: "",
+    client_name: "",
+    client_email: "",
+    client_address: "",
   });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -36,13 +37,16 @@ const EditLaboratory = () => {
     email: "",
     username: "",
     password: "",
+    client_name: "",
+    client_email: "",
+    client_address: "",
   });
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
         const response = await fetch(
-          `http://103.165.118.71:3005/getLaboratoryById/${id}`
+          `http://localhost:3005/getLaboratoryById/${id}`
         );
         const data = await response.json();
 
@@ -59,6 +63,9 @@ const EditLaboratory = () => {
             email: data.email || "",
             username: data.username || "",
             password: data.password || "",
+            client_name: data.client_name || "",
+            client_email: data.client_email || "",
+            client_address: data.client_address || "",
           });
         }
       } catch (error) {
@@ -94,6 +101,9 @@ const EditLaboratory = () => {
       email,
       username,
       password,
+      client_name,
+      client_email,
+      client_address,
     } = formData;
     const errors = {};
 
@@ -114,6 +124,9 @@ const EditLaboratory = () => {
     if (!email) errors.email = "Email is required!";
     if (!username) errors.username = "Username is required!";
     if (!password) errors.password = "Password is required!";
+    if (!client_name) errors.client_name = "Client Name is required!";
+    if (!client_email) errors.client_email = "Client Email is required!";
+    if (!client_address) errors.client_address = "Client Address is required!";
 
     return errors;
   };
@@ -132,7 +145,7 @@ const EditLaboratory = () => {
 
     try {
       const response = await fetch(
-        `http://103.165.118.71:3005/updateLaboratory/${id}`,
+        `http://localhost:3005/updateLaboratory/${id}`,
         {
           method: "PUT",
           headers: {
@@ -202,6 +215,9 @@ const EditLaboratory = () => {
             "email",
             "username",
             "password",
+            "client_name",
+            "client_email",
+            "client_address",
           ].map((field) => (
             <div key={field}>
               <label
@@ -211,14 +227,14 @@ const EditLaboratory = () => {
                   textTransform: "capitalize",
                 }}
               >
-                {field}:
+                {field.replace("_", " ")}:
               </label>
               <input
                 type={field === "password" ? "password" : "text"}
                 name={field}
                 value={formData[field]}
                 onChange={handleChange}
-                placeholder={`Enter ${field}`}
+                placeholder={`Enter ${field.replace("_", " ")}`}
                 style={{
                   width: "100%",
                   padding: "10px",

@@ -30,7 +30,7 @@ function Appointment() {
 
   useEffect(() => {
     const getAppointmentList = async () => {
-      const res = await fetch("http://103.165.118.71:3005/getallappointment");
+      const res = await fetch("http://localhost:3005/getallappointment");
       const getData = await res.json();
       setAppointmentList(getData);
     };
@@ -58,7 +58,7 @@ function Appointment() {
   };
 
   const handleDownloadExcel = () => {
-    window.open("http://103.165.118.71:3005/downloadAppointments", "_blank");
+    window.open("http://localhost:3005/downloadAppointments", "_blank");
   };
 
   const handleImageClick = () => {
@@ -88,7 +88,6 @@ function Appointment() {
     <div>
       <div class="main-wrapper">
         <Navbar />
-       
 
         <div class="page-wrapper">
           <div class="content">
@@ -230,7 +229,7 @@ function Appointment() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Medical Test
+                                        Medical Test Details
                                       </TableCell>
                                       <TableCell
                                         sx={{
@@ -247,6 +246,63 @@ function Appointment() {
                                         }}
                                       >
                                         Proposal No
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Address
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Country
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        State
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        City
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Pincode
+                                      </TableCell>
+
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Insurance Name
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        TPA Details
                                       </TableCell>
                                     </TableRow>
                                   </TableHead>
@@ -271,6 +327,28 @@ function Appointment() {
                                         </TableCell>
                                         <TableCell>
                                           {appointment.appointment_no}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.address}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.country}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.state}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.city}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.pincode}
+                                        </TableCell>
+
+                                        <TableCell>
+                                          {appointment.insurance_name}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.tpa_details}
                                         </TableCell>
                                       </TableRow>
                                     ))}
@@ -299,6 +377,23 @@ function Appointment() {
                           </div>
                         </div>
                       </div>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        padding: "10px",
+                      }}
+                    >
+                      <Link
+                        to="/addAppointment"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <Button variant="contained" color="primary">
+                          Add Appointment
+                        </Button>
+                      </Link>
                     </div>
 
                     <div class="table-responsive">
@@ -355,7 +450,7 @@ function Appointment() {
                                 padding: "12px 15px",
                               }}
                             >
-                              Medical Test
+                              Medical Test Details
                             </th>
                             <th
                               style={{
@@ -374,6 +469,70 @@ function Appointment() {
                               }}
                             >
                               Proposal No
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Address
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Country
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              State
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              City
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Pincode
+                            </th>
+
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Insurance Name
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              TPA Details
                             </th>
                             <th
                               style={{
@@ -431,6 +590,28 @@ function Appointment() {
                               </td>
                               <td style={{ padding: "12px 15px" }}>
                                 {getcate.appointment_no}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.address}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.country}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.state}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.city}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.pincode}
+                              </td>
+
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.insurance_name}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.tpa_details}
                               </td>
                               <td
                                 className="text-center"
@@ -928,12 +1109,109 @@ function Appointment() {
                         }}
                       >
                         <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Treatment:</strong>{" "}
+                          <strong>Test Details:</strong>{" "}
                           {selectedAppointment.treatment}
                         </p>
                       </div>
                     </div>
-                    <div className="col-md-12 text-end mt-4">
+                    <div className="col-md-12">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Address:</strong>{" "}
+                          {selectedAppointment.address}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Country:</strong>{" "}
+                          {selectedAppointment.country}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>State:</strong> {selectedAppointment.state}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>City:</strong> {selectedAppointment.city}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Pincode:</strong>{" "}
+                          {selectedAppointment.pincode}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Insurance Name:</strong>{" "}
+                          {selectedAppointment.insurance_name}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>TPA Details:</strong>{" "}
+                          {selectedAppointment.tpa_details}
+                        </p>
+                      </div>
+                    </div>
+                    {/* <div className="col-md-12 text-end mt-4">
                       <Link
                         to="/ReplyAppointment"
                         state={{ appointment: selectedAppointment }}
@@ -949,7 +1227,7 @@ function Appointment() {
                       >
                         Reply
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                 ) : (
                   <p

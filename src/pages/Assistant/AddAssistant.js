@@ -63,7 +63,7 @@ const AddAssistant = () => {
 
     try {
       const response = await axios.post(
-        "http://103.165.118.71:3005/addAssistant", // Updated API endpoint
+        "http://localhost:3005/addAssistant", // Updated API endpoint
         formData
       );
       setMessage(response.data);

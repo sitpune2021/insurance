@@ -10,6 +10,13 @@ const EditAppointment = () => {
   const [time, setTime] = useState("");
   const [treatment, setTreatment] = useState("");
   const [message, setMessage] = useState("");
+  const [address, setAddress] = useState("");
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [insurance_name, setInsurance_name] = useState("");
+  const [tpa_details, setTpa_details] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageError, setMessageError] = useState(""); // State to track message validation error
 
@@ -17,7 +24,7 @@ const EditAppointment = () => {
     const fetchAppointmentDetails = async () => {
       try {
         const response = await fetch(
-          `http://103.165.118.71:3005/getAppointmentById/${id}`
+          `http://localhost:3005/getAppointmentById/${id}`
         );
         const data = await response.json();
 
@@ -25,6 +32,13 @@ const EditAppointment = () => {
         const formattedTime = formatDateTime(data.time);
         setAppointment(data);
         setTime(formattedTime); // Set formatted time
+        setTreatment(data.address);
+        setTreatment(data.country);
+        setTreatment(data.state);
+        setTreatment(data.city);
+        setTreatment(data.pincode);
+        setTreatment(data.insurance_name);
+        setTreatment(data.tpa_details);
         setTreatment(data.treatment);
         setMessage(data.message || ""); // Default empty if no message
       } catch (error) {
@@ -71,7 +85,7 @@ const EditAppointment = () => {
 
     try {
       const response = await fetch(
-        `http://103.165.118.71:3005/updateAppointment/${id}`,
+        `http://localhost:3005/updateAppointment/${id}`,
         {
           method: "PUT",
           headers: {
@@ -148,6 +162,27 @@ const EditAppointment = () => {
               </p>
               <p>
                 <strong>Contact:</strong> {appointment.mobileno}
+              </p>
+              <p>
+                <strong>Address:</strong> {appointment.address}
+              </p>
+              <p>
+                <strong>Country:</strong> {appointment.country}
+              </p>
+              <p>
+                <strong>State:</strong> {appointment.state}
+              </p>
+              <p>
+                <strong>City:</strong> {appointment.city}
+              </p>
+              <p>
+                <strong>Pincode:</strong> {appointment.pincode}
+              </p>
+              <p>
+                <strong>Insurance Name:</strong> {appointment.insurance_name}
+              </p>
+              <p>
+                <strong>TPA Details:</strong> {appointment.tpa_details}
               </p>
             </div>
 

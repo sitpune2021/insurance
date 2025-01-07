@@ -2,6 +2,7 @@ import React from "react";
 import Login from "./pages/Login_auth";
 import Home from "./pages/Home";
 import Appointment from "./pages/Appointment/Appointment";
+import AddAppointment from "./pages/Appointment/AddAppointment";
 import AppointmentReply from "./pages/Appointment/AppointmentReply";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import EventDetailsPage from "./pages/EvenetsDetailsPage";
@@ -27,6 +28,7 @@ function App() {
         ></Route>
         <Route path="/LaboratoryNavbar" element={<laboratoryNavbar />}></Route>
         <Route path="/Appointment" element={<Appointment />}></Route>
+        <Route path="/addAppointment" element={<AddAppointment />}></Route>
         <Route path="/edit-appointment/:id" element={<EditAppointment />} />
         <Route path="/ReplyAppointment" element={<AppointmentReply />}></Route>
         <Route path="/calendar" element={<FullPageCalendar />} />

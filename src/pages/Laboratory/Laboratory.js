@@ -32,7 +32,7 @@ function Laboratory() {
 
   useEffect(() => {
     const getAppointmentList = async () => {
-      const res = await fetch("http://103.165.118.71:3005/getAllLaboratories");
+      const res = await fetch("http://localhost:3005/getAllLaboratories");
       const getData = await res.json();
       setAppointmentList(getData);
     };
@@ -60,7 +60,7 @@ function Laboratory() {
   };
 
   const handleDownloadExcel = () => {
-    window.open("http://103.165.118.71:3005/downloadAppointments", "_blank");
+    window.open("http://localhost:3005/downloadAppointments", "_blank");
   };
 
   const handleImageClick = () => {
@@ -97,7 +97,7 @@ function Laboratory() {
   const confirmDelete = async () => {
     try {
       const res = await fetch(
-        `http://103.165.118.71:3005/deleteLaboratory/${deleteId}`,
+        `http://localhost:3005/deleteLaboratory/${deleteId}`,
         {
           method: "DELETE",
         }
@@ -135,12 +135,12 @@ function Laboratory() {
                 <div class="col-sm-12">
                   <ul class="breadcrumb">
                     <li class="breadcrumb-item">
-                      <a href="appointments.html">Laboratories</a>
+                      <a href="appointments.html">Centres</a>
                     </li>
                     <li class="breadcrumb-item">
                       <i class="feather-chevron-right"></i>
                     </li>
-                    <li class="breadcrumb-item active">Laboratory List</li>
+                    <li class="breadcrumb-item active">Diagonastic Centre List</li>
                   </ul>
                 </div>
               </div>
@@ -154,7 +154,7 @@ function Laboratory() {
                       <div class="row align-items-center">
                         <div class="col">
                           <div class="doctor-table-blk">
-                            <h3>Laboratory</h3>
+                            <h3>Diagonastic Centre</h3>
                             <div class="doctor-search-blk">
                               <div class="top-nav-search table-search-blk">
                                 <form>
@@ -236,7 +236,7 @@ function Laboratory() {
                                 }}
                               >
                                 <Typography variant="h6">
-                                  Laboratories
+                                  Centres
                                 </Typography>
                               </DialogTitle>
 
@@ -335,6 +335,30 @@ function Laboratory() {
                                       >
                                         Password
                                       </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Client Name
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Client Email
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Client Address
+                                      </TableCell>
                                     </TableRow>
                                   </TableHead>
                                   <TableBody>
@@ -371,6 +395,15 @@ function Laboratory() {
                                           {appointment.username}
                                           <TableCell>
                                             {appointment.password}
+                                          </TableCell>
+                                          <TableCell>
+                                            {appointment.client_name}
+                                          </TableCell>
+                                          <TableCell>
+                                            {appointment.client_email}
+                                          </TableCell>
+                                          <TableCell>
+                                            {appointment.client_address}
                                           </TableCell>
                                         </TableCell>
                                       </TableRow>
@@ -414,7 +447,7 @@ function Laboratory() {
                         style={{ textDecoration: "none" }}
                       >
                         <Button variant="contained" color="primary">
-                          Add Laboratory
+                          Add Centre
                         </Button>
                       </Link>
                     </div>
@@ -550,6 +583,33 @@ function Laboratory() {
                             <th
                               style={{
                                 fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Clinet Name
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Client Email
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Client Address
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
                                 textAlign: "center",
                                 color: "#2E37A4",
                                 padding: "12px 15px",
@@ -609,6 +669,15 @@ function Laboratory() {
                               </td>
                               <td style={{ padding: "12px 15px" }}>
                                 {getcate.password}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.client_name}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.client_email}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.client_address}
                               </td>
                               <td
                                 className="text-center"
@@ -1208,6 +1277,48 @@ function Laboratory() {
                       >
                         <p style={{ margin: 0, color: "#4e73df" }}>
                           <strong>Password:</strong>{" "}
+                          {selectedAppointment.password}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Clinet Name:</strong>{" "}
+                          {selectedAppointment.client_name}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>client Email:</strong>{" "}
+                          {selectedAppointment.password}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Client Address:</strong>{" "}
                           {selectedAppointment.password}
                         </p>
                       </div>

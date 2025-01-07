@@ -1,9 +1,6 @@
-//Code by Prajwal Punekar
-
-
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 import Navbar from "../navBar";
 
 const AddLaboratory = () => {
@@ -19,13 +16,16 @@ const AddLaboratory = () => {
     email: "",
     username: "",
     password: "",
+    client_name: "",
+    client_email: "",
+    client_address: "",
   });
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false); // Modal visibility state
+  const [showModal, setShowModal] = useState(false);
 
-  const navigate = useNavigate(); // Use navigate for navigation
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,6 +48,9 @@ const AddLaboratory = () => {
       email,
       username,
       password,
+      client_name,
+      client_email,
+      client_address,
     } = formData;
 
     if (
@@ -61,25 +64,28 @@ const AddLaboratory = () => {
       !mobileno ||
       !email ||
       !username ||
-      !password
+      !password ||
+      !client_name ||
+      !client_email ||
+      !client_address
     ) {
       return "All fields are required!";
     }
 
-    // Pincode validation (assuming it's a 6-digit number)
+    // Pincode validation
     if (isNaN(pincode) || pincode.length !== 6) {
       return "Pincode must be a 6-digit number.";
     }
 
-    // Mobile number validation (assuming 10 digits)
+    // Mobile number validation
     if (isNaN(mobileno) || mobileno.length !== 10) {
       return "Mobile number must be a 10-digit number.";
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return "Please enter a valid email address.";
+    if (!emailRegex.test(email) || !emailRegex.test(client_email)) {
+      return "Please enter valid email addresses.";
     }
 
     return null;
@@ -98,7 +104,7 @@ const AddLaboratory = () => {
 
     try {
       const response = await axios.post(
-        "http://103.165.118.71:3005/addLaboratory",
+        "http://localhost:3005/addLaboratory",
         formData
       );
       setMessage(response.data);
@@ -119,21 +125,23 @@ const AddLaboratory = () => {
         email: "",
         username: "",
         password: "",
+        client_name: "",
+        client_email: "",
+        client_address: "",
       });
 
       // Navigate to the Laboratory page after 2 seconds
       setTimeout(() => {
-        navigate("/laboratory"); // Navigate to the laboratory page
+        navigate("/laboratory");
       }, 4000);
     } catch (err) {
       setError(err.response?.data || "Failed to add laboratory");
     }
   };
 
-  // Close the modal and navigate to the Laboratory page
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate("/laboratory"); // Navigate to the laboratory page when closing the modal
+    navigate("/laboratory");
   };
 
   return (
@@ -141,7 +149,6 @@ const AddLaboratory = () => {
       <Navbar />
 
       <div className="page-wrapper" style={{ marginTop: "50px" }}>
-        {/* Main Content */}
         <div style={{ flex: 1, padding: "20px", backgroundColor: "#fff" }}>
           <h2
             style={{
@@ -154,7 +161,6 @@ const AddLaboratory = () => {
             Add Laboratory
           </h2>
 
-          {/* Form Section */}
           <form
             onSubmit={handleSubmit}
             style={{
@@ -164,6 +170,7 @@ const AddLaboratory = () => {
               maxWidth: "100%",
             }}
           >
+            {/* Laboratory Details */}
             {[
               { name: "title", type: "text", placeholder: "Title" },
               { name: "country", type: "text", placeholder: "Country" },
@@ -229,6 +236,71 @@ const AddLaboratory = () => {
               </div>
             ))}
 
+            {/* Client Information Section */}
+            <h3 style={{ width: "100%", marginTop: "20px" }}>
+              Client Information
+            </h3>
+            {[
+              { name: "client_name", type: "text", placeholder: "Client Name" },
+              {
+                name: "client_email",
+                type: "email",
+                placeholder: "Client Email",
+              },
+              {
+                name: "client_address",
+                type: "textarea",
+                placeholder: "Client Address",
+              },
+            ].map((field) => (
+              <div
+                key={field.name}
+                style={{
+                  flex:
+                    field.name === "client_address"
+                      ? "1 1 100%"
+                      : "1 1 calc(33.33% - 20px)",
+                  minWidth: field.name === "client_address" ? "100%" : "200px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "5px",
+                }}
+              >
+                {field.type === "textarea" ? (
+                  <textarea
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    required
+                    style={{
+                      padding: "12px",
+                      border: "1px solid #ccc",
+                      borderRadius: "6px",
+                      resize: "none",
+                      fontSize: "14px",
+                      height: "80px",
+                    }}
+                  ></textarea>
+                ) : (
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    required
+                    style={{
+                      padding: "12px",
+                      border: "1px solid #ccc",
+                      borderRadius: "6px",
+                      fontSize: "14px",
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+
             {/* Submit Button */}
             <div
               style={{
@@ -254,43 +326,54 @@ const AddLaboratory = () => {
             </div>
           </form>
 
+          {/* Success Modal */}
           {showModal && (
             <div
               style={{
                 position: "fixed",
-                top: "0",
-                left: "0",
+                top: 0,
+                left: 0,
                 width: "100%",
                 height: "100%",
                 backgroundColor: "rgba(0, 0, 0, 0.5)",
                 display: "flex",
-                justifyContent: "center",
                 alignItems: "center",
+                justifyContent: "center",
+                zIndex: 1000,
               }}
             >
               <div
                 style={{
-                  backgroundColor: "white",
-                  padding: "20px",
-                  borderRadius: "8px",
+                  backgroundColor: "#fff",
+                  padding: "30px",
+                  borderRadius: "10px",
                   textAlign: "center",
-                  maxWidth: "400px",
-                  width: "100%",
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                  maxWidth: "500px", // Max width for larger screens
+                  width: "90%", // 90% width for smaller screens
+                  transition: "all 0.3s ease", // Smooth transition for resizing
                 }}
               >
-                <h3>Laboratory Added Successfully!</h3>
-                <p>Your laboratory has been added successfully.</p>
-                <button
-                  onClick={handleCloseModal} // Direct navigation after closing
+                <h3
                   style={{
-                    padding: "10px 20px",
-                    backgroundColor: "#2E37A4",
-                    color: "white",
+                    marginBottom: "20px",
+                    color: "#4e73df",
+                    fontSize: "24px", // Responsive font size
+                  }}
+                >
+                  Laboratory Added Successfully!
+                </h3>
+                <button
+                  onClick={handleCloseModal}
+                  style={{
+                    padding: "8px 16px",
+                    fontSize: "1rem",
+                    backgroundColor: "#4e73df",
+                    color: "#fff",
                     border: "none",
-                    borderRadius: "6px",
+                    borderRadius: "5px",
                     cursor: "pointer",
-                    fontSize: "16px",
-                    marginTop: "20px",
+                    transition: "background-color 0.3s ease", // Smooth hover effect
                   }}
                 >
                   Close

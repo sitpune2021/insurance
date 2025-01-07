@@ -147,7 +147,7 @@ function navBar() {
                   <span className="menu-side">
                     <img src="assets/img/icons/menu-icon-04.svg" alt="" />
                   </span>{" "}
-                  <span> Laboratory </span>
+                  <span> Diagonastic Centre </span>
                 </Link>
               </li>
               <li className="submenu">
@@ -155,7 +155,7 @@ function navBar() {
                   <span className="menu-side">
                     <img src="assets/img/icons/menu-icon-04.svg" alt="" />
                   </span>{" "}
-                  <span> Assistant </span>
+                  <span> Technician </span>
                 </Link>
               </li>
               <li className="submenu">

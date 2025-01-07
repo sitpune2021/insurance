@@ -32,7 +32,7 @@ function Assistant() {
 
   useEffect(() => {
     const getAppointmentList = async () => {
-      const res = await fetch("http://103.165.118.71:3005/getAllassistant");
+      const res = await fetch("http://localhost:3005/getAllassistant");
       const getData = await res.json();
       setAppointmentList(getData);
     };
@@ -60,7 +60,7 @@ function Assistant() {
   };
 
   const handleDownloadExcel = () => {
-    window.open("http://103.165.118.71:3005/downloadAppointments", "_blank");
+    window.open("http://localhost:3005/downloadAppointments", "_blank");
   };
 
   const handleImageClick = () => {
@@ -97,7 +97,7 @@ function Assistant() {
   const confirmDelete = async () => {
     try {
       const res = await fetch(
-        `http://103.165.118.71:3005/deleteAssistant/${deleteId}`,
+        `http://localhost:3005/deleteAssistant/${deleteId}`,
         {
           method: "DELETE",
         }
@@ -135,12 +135,12 @@ function Assistant() {
                 <div class="col-sm-12">
                   <ul class="breadcrumb">
                     <li class="breadcrumb-item">
-                      <a href="appointments.html">Assistant</a>
+                      <a href="appointments.html">Technician</a>
                     </li>
                     <li class="breadcrumb-item">
                       <i class="feather-chevron-right"></i>
                     </li>
-                    <li class="breadcrumb-item active">Assistant List</li>
+                    <li class="breadcrumb-item active">Technician List</li>
                   </ul>
                 </div>
               </div>
@@ -154,7 +154,7 @@ function Assistant() {
                       <div class="row align-items-center">
                         <div class="col">
                           <div class="doctor-table-blk">
-                            <h3>Assistant</h3>
+                            <h3>Technician</h3>
                             <div class="doctor-search-blk">
                               <div class="top-nav-search table-search-blk">
                                 <form>
