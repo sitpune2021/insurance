@@ -12,7 +12,7 @@ function Login_auth() {
     e.preventDefault();
 
     try {
-      const result = await axios.post("http://localhost:3005/checkLogin", {
+      const result = await axios.post("http://3.109.174.127:3005/checkLogin", {
         username,
         password,
       });

@@ -21,7 +21,7 @@ const CalendarComponent = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3005/getallappointment",
+          "http://3.109.174.127:3005/getallappointment",
           { withCredentials: true }
         );
 

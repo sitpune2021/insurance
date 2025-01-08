@@ -46,7 +46,7 @@ const EditLaboratory = () => {
     const fetchDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3005/getLaboratoryById/${id}`
+          `http://3.109.174.127:3005/getLaboratoryById/${id}`
         );
         const data = await response.json();
 
@@ -145,7 +145,7 @@ const EditLaboratory = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3005/updateLaboratory/${id}`,
+        `http://3.109.174.127:3005/updateLaboratory/${id}`,
         {
           method: "PUT",
           headers: {

@@ -24,7 +24,7 @@ const EditAppointment = () => {
     const fetchAppointmentDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3005/getAppointmentById/${id}`
+          `http://3.109.174.127:3005/getAppointmentById/${id}`
         );
         const data = await response.json();
 
@@ -85,7 +85,7 @@ const EditAppointment = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3005/updateAppointment/${id}`,
+        `http://3.109.174.127:3005/updateAppointment/${id}`,
         {
           method: "PUT",
           headers: {

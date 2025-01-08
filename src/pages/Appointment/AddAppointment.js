@@ -92,7 +92,7 @@ const AddAppointment = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3005/addAppointment", // Make sure the backend URL is correct
+        "http://3.109.174.127:3005/addAppointment", // Make sure the backend URL is correct
         formData
       );
       setMessage(response.data);

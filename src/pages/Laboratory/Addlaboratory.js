@@ -104,7 +104,7 @@ const AddLaboratory = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3005/addLaboratory",
+        "http://3.109.174.127:3005/addLaboratory",
         formData
       );
       setMessage(response.data);

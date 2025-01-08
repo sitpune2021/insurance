@@ -4,7 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import React, { useEffect, useState } from "react";
-import Navbar from "../navBar";
+import InnerNavbar from "../InnerNavbar";
 import {
   Dialog,
   DialogActions,
@@ -19,25 +19,32 @@ import {
   Typography,
   Pagination,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-function Assistant() {
+function Appointment() {
   const [appointment, setAppointmentList] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showAppointmentDetails, setShowAppointmentDetails] = useState(false); // Track showing details
   const [currentPage, setCurrentPage] = useState(1);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // Track delete modal
-  const [deleteId, setDeleteId] = useState(null);
   const itemsPerPage = 5; // Number of items per page
+  const { status } = useParams();
 
   useEffect(() => {
+    // Fetch appointment list based on the status
     const getAppointmentList = async () => {
-      const res = await fetch("http://3.109.174.127:3005/getAllassistant");
-      const getData = await res.json();
-      setAppointmentList(getData);
+      const res = await fetch(
+        `http://3.109.174.127:3005/getAppointmentByStatus/${status}`
+      );
+      const data = await res.json();
+      if (res.status === 200) {
+        setAppointmentList(data);
+      } else {
+        // Handle error cases
+        console.error(data.message);
+      }
     };
     getAppointmentList();
-  });
+  }, [status]);
 
   useEffect(() => {
     // Ensure modal initializes correctly
@@ -86,47 +93,10 @@ function Assistant() {
 
   // Calculate total pages
   const totalPages = Math.ceil(appointment.length / itemsPerPage);
-
-  // Handle Delete Confirmation
-  const handleDeleteClick = (id) => {
-    setDeleteId(id);
-    setShowDeleteModal(true);
-  };
-
-  // Confirm Deletion
-  const confirmDelete = async () => {
-    try {
-      const res = await fetch(
-        `http://3.109.174.127:3005/deleteAssistant/${deleteId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (res.ok) {
-        setAppointmentList((prev) =>
-          prev.filter((item) => item.assistant_id !== deleteId)
-        );
-        setShowDeleteModal(false);
-        setDeleteId(null);
-        console.log("Assistant deleted successfully");
-      } else {
-        console.error("Failed to delete assistant");
-      }
-    } catch (error) {
-      console.error("Error deleting assistant:", error);
-    }
-  };
-
-  // Cancel Deletion
-  const cancelDelete = () => {
-    setShowDeleteModal(false);
-    setDeleteId(null);
-  };
-
   return (
     <div>
       <div class="main-wrapper">
-        <Navbar />
+        <InnerNavbar />
 
         <div class="page-wrapper">
           <div class="content">
@@ -135,12 +105,12 @@ function Assistant() {
                 <div class="col-sm-12">
                   <ul class="breadcrumb">
                     <li class="breadcrumb-item">
-                      <a href="appointments.html">Technician</a>
+                      <a href="appointments.html">Appointment</a>
                     </li>
                     <li class="breadcrumb-item">
                       <i class="feather-chevron-right"></i>
                     </li>
-                    <li class="breadcrumb-item active">Technician List</li>
+                    <li class="breadcrumb-item active">Appointment List</li>
                   </ul>
                 </div>
               </div>
@@ -154,7 +124,7 @@ function Assistant() {
                       <div class="row align-items-center">
                         <div class="col">
                           <div class="doctor-table-blk">
-                            <h3>Technician</h3>
+                            <h3>Appointment</h3>
                             <div class="doctor-search-blk">
                               <div class="top-nav-search table-search-blk">
                                 <form>
@@ -165,7 +135,7 @@ function Assistant() {
                                   />
                                   <a class="btn">
                                     <img
-                                      src="assets/img/icons/search-normal.svg"
+                                      src="../assets/img/icons/search-normal.svg"
                                       alt=""
                                     />
                                   </a>
@@ -176,14 +146,14 @@ function Assistant() {
                                   href="add-appointment.html"
                                   class="btn btn-primary add-pluss ms-2"
                                 >
-                                  <img src="assets/img/icons/plus.svg" alt="" />
+                                  <img src="../assets/img/icons/plus.svg" alt="" />
                                 </a>
                                 <a
                                   href="javascript:;"
                                   class="btn btn-primary doctor-refresh ms-2"
                                 >
                                   <img
-                                    src="assets/img/icons/re-fresh.svg"
+                                    src="../assets/img/icons/re-fresh.svg"
                                     alt=""
                                   />
                                 </a>
@@ -194,19 +164,19 @@ function Assistant() {
                         <div class="col-auto text-end float-end ms-auto download-grp">
                           <a href="javascript:;" class=" me-2">
                             <img
-                              src="assets/img/icons/pdf-icon-01.svg"
+                              src="../assets/img/icons/pdf-icon-01.svg"
                               alt=""
                             />
                           </a>
                           <a href="javascript:;" class=" me-2">
                             <img
-                              src="assets/img/icons/pdf-icon-02.svg"
+                              src="../assets/img/icons/pdf-icon-02.svg"
                               alt=""
                             />
                           </a>
                           <a href="javascript:;" class=" me-2">
                             <img
-                              src="assets/img/icons/pdf-icon-03.svg"
+                              src="../assets/img/icons/pdf-icon-03.svg"
                               alt=""
                             />
                           </a>
@@ -215,7 +185,7 @@ function Assistant() {
                             {/* Image Click to Show Appointment Details */}
                             <a onClick={handleImageClick}>
                               <img
-                                src="assets/img/icons/pdf-icon-04.svg"
+                                src="../assets/img/icons/pdf-icon-04.svg"
                                 alt="View Appointments"
                               />
                             </a>
@@ -235,9 +205,10 @@ function Assistant() {
                                   padding: "16px",
                                 }}
                               >
-                                <Typography variant="h6">Assistants</Typography>
+                                <Typography variant="h6">
+                                  Appointments
+                                </Typography>
                               </DialogTitle>
-
                               <DialogContent sx={{ padding: "16px" }}>
                                 {/* Table to Show Appointment Details */}
                                 <Table>
@@ -251,7 +222,7 @@ function Assistant() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Name
+                                        Appointment Time
                                       </TableCell>
                                       <TableCell
                                         sx={{
@@ -259,7 +230,7 @@ function Assistant() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Mobile No
+                                        Client Name
                                       </TableCell>
                                       <TableCell
                                         sx={{
@@ -267,7 +238,7 @@ function Assistant() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Email
+                                        Medical Test Details
                                       </TableCell>
                                       <TableCell
                                         sx={{
@@ -275,7 +246,7 @@ function Assistant() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Username
+                                        Contact No
                                       </TableCell>
                                       <TableCell
                                         sx={{
@@ -283,7 +254,64 @@ function Assistant() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Password
+                                        Proposal No
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Address
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Country
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        State
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        City
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Pincode
+                                      </TableCell>
+
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Insurance Name
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        TPA Details
                                       </TableCell>
                                     </TableRow>
                                   </TableHead>
@@ -291,19 +319,45 @@ function Assistant() {
                                     {appointment.map((appointment) => (
                                       <TableRow key={appointment.id}>
                                         <TableCell>
+                                          {new Date(
+                                            appointment.time
+                                          ).toLocaleString("en-US", {
+                                            timeZone: "Asia/Kolkata",
+                                          })}
+                                        </TableCell>
+                                        <TableCell>
                                           {appointment.name}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.treatment}
                                         </TableCell>
                                         <TableCell>
                                           {appointment.mobileno}
                                         </TableCell>
                                         <TableCell>
-                                          {appointment.email}
+                                          {appointment.appointment_no}
                                         </TableCell>
                                         <TableCell>
-                                          {appointment.username}
+                                          {appointment.address}
                                         </TableCell>
                                         <TableCell>
-                                          {appointment.password}
+                                          {appointment.country}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.state}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.city}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.pincode}
+                                        </TableCell>
+
+                                        <TableCell>
+                                          {appointment.insurance_name}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.tpa_details}
                                         </TableCell>
                                       </TableRow>
                                     ))}
@@ -334,7 +388,7 @@ function Assistant() {
                       </div>
                     </div>
 
-                    <div
+                    {/* <div
                       style={{
                         display: "flex",
                         justifyContent: "flex-end",
@@ -342,14 +396,14 @@ function Assistant() {
                       }}
                     >
                       <Link
-                        to="/addassistant"
+                        to="/addAppointment"
                         style={{ textDecoration: "none" }}
                       >
                         <Button variant="contained" color="primary">
-                          Add Assistant
+                          Add Appointment
                         </Button>
                       </Link>
-                    </div>
+                    </div> */}
 
                     <div class="table-responsive">
                       <table
@@ -378,7 +432,7 @@ function Assistant() {
                                 padding: "12px 15px",
                               }}
                             >
-                              Sr.No
+                              #
                             </th>
                             <th
                               style={{
@@ -387,7 +441,7 @@ function Assistant() {
                                 padding: "12px 15px",
                               }}
                             >
-                              Name
+                              Appointment Date
                             </th>
                             <th
                               style={{
@@ -396,7 +450,7 @@ function Assistant() {
                                 padding: "12px 15px",
                               }}
                             >
-                              Mobile No
+                              Client Name
                             </th>
                             <th
                               style={{
@@ -405,7 +459,7 @@ function Assistant() {
                                 padding: "12px 15px",
                               }}
                             >
-                              Email
+                              Medical Test Details
                             </th>
                             <th
                               style={{
@@ -414,7 +468,7 @@ function Assistant() {
                                 padding: "12px 15px",
                               }}
                             >
-                              Username
+                              Contact No
                             </th>
                             <th
                               style={{
@@ -423,9 +477,72 @@ function Assistant() {
                                 padding: "12px 15px",
                               }}
                             >
-                              Password
+                              Proposal No
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Address
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Country
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              State
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              City
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Pincode
                             </th>
 
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              Insurance Name
+                            </th>
+                            <th
+                              style={{
+                                fontWeight: "bold",
+                                color: "#2E37A4",
+                                padding: "12px 15px",
+                              }}
+                            >
+                              TPA Details
+                            </th>
                             <th
                               style={{
                                 fontWeight: "bold",
@@ -457,21 +574,54 @@ function Assistant() {
                                 {index + 1}
                               </td>
                               <td style={{ padding: "12px 15px" }}>
+                                {new Date(getcate.time).toLocaleString(
+                                  "en-US",
+                                  {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    second: "2-digit",
+                                    hour12: true,
+                                    timeZone: "Asia/Kolkata",
+                                  }
+                                )}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
                                 {getcate.name}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.treatment}
                               </td>
                               <td style={{ padding: "12px 15px" }}>
                                 {getcate.mobileno}
                               </td>
                               <td style={{ padding: "12px 15px" }}>
-                                {getcate.email}
+                                {getcate.appointment_no}
                               </td>
                               <td style={{ padding: "12px 15px" }}>
-                                {getcate.username}
+                                {getcate.address}
                               </td>
                               <td style={{ padding: "12px 15px" }}>
-                                {getcate.password}
+                                {getcate.country}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.state}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.city}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.pincode}
                               </td>
 
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.insurance_name}
+                              </td>
+                              <td style={{ padding: "12px 15px" }}>
+                                {getcate.tpa_details}
+                              </td>
                               <td
                                 className="text-center"
                                 style={{
@@ -509,7 +659,7 @@ function Assistant() {
                                       View
                                     </a>
                                     <Link
-                                      to={`/edit-assistant/${getcate.assistant_id}`}
+                                      to={`/edit-appointment/${getcate.appointment_id}`}
                                       className="dropdown-item"
                                       style={{
                                         display: "flex",
@@ -526,16 +676,13 @@ function Assistant() {
 
                                     <a
                                       className="dropdown-item"
-                                      // href="#"
-                                      // data-bs-toggle="modal"
-                                      // data-bs-target="#delete_patient"
+                                      href="#"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#delete_patient"
                                       style={{
                                         display: "flex",
                                         alignItems: "center",
                                       }}
-                                      onClick={() =>
-                                        handleDeleteClick(getcate.assistant_id)
-                                      }
                                     >
                                       <DeleteIcon
                                         style={{ marginRight: "8px" }}
@@ -573,22 +720,6 @@ function Assistant() {
               </div>
             </div>
           </div>
-
-          {/* Delete Confirmation Modal */}
-          <Dialog open={showDeleteModal} onClose={cancelDelete}>
-            <DialogTitle>Confirm Deletion</DialogTitle>
-            <DialogContent>
-              Are you sure you want to delete this laboratory?
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={cancelDelete} color="secondary">
-                Cancel
-              </Button>
-              <Button onClick={confirmDelete} color="error">
-                Delete
-              </Button>
-            </DialogActions>
-          </Dialog>
 
           <div class="notification-box">
             <div class="msg-sidebar notifications msg-noti">
@@ -890,7 +1021,7 @@ function Assistant() {
                   }}
                 >
                   <i className="fa-solid fa-calendar-check me-2"></i>
-                  Assistant Details
+                  Appointment Details
                 </h5>
                 <button
                   type="button"
@@ -920,8 +1051,34 @@ function Assistant() {
                         }}
                       >
                         <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Assistant No:</strong>{" "}
-                          {selectedAppointment.lab_id}
+                          <strong>Appointment No:</strong>{" "}
+                          {selectedAppointment.appointment_no}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Date:</strong>{" "}
+                          {new Date(selectedAppointment.time).toLocaleString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                              hour12: true,
+                              timeZone: "Asia/Kolkata",
+                            }
+                          )}
                         </p>
                       </div>
                     </div>
@@ -947,8 +1104,36 @@ function Assistant() {
                         }}
                       >
                         <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Mobile No:</strong>{" "}
+                          <strong>Mobile:</strong>{" "}
                           {selectedAppointment.mobileno}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Test Details:</strong>{" "}
+                          {selectedAppointment.treatment}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Address:</strong>{" "}
+                          {selectedAppointment.address}
                         </p>
                       </div>
                     </div>
@@ -961,11 +1146,12 @@ function Assistant() {
                         }}
                       >
                         <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Email:</strong> {selectedAppointment.email}
+                          <strong>Country:</strong>{" "}
+                          {selectedAppointment.country}
                         </p>
                       </div>
                     </div>
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <div
                         className="p-3 rounded"
                         style={{
@@ -974,12 +1160,11 @@ function Assistant() {
                         }}
                       >
                         <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Username:</strong>{" "}
-                          {selectedAppointment.username}
+                          <strong>State:</strong> {selectedAppointment.state}
                         </p>
                       </div>
                     </div>
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <div
                         className="p-3 rounded"
                         style={{
@@ -988,12 +1173,53 @@ function Assistant() {
                         }}
                       >
                         <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Password:</strong>{" "}
-                          {selectedAppointment.password}
+                          <strong>City:</strong> {selectedAppointment.city}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Pincode:</strong>{" "}
+                          {selectedAppointment.pincode}
                         </p>
                       </div>
                     </div>
 
+                    <div className="col-md-6">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>Insurance Name:</strong>{" "}
+                          {selectedAppointment.insurance_name}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div
+                        className="p-3 rounded"
+                        style={{
+                          backgroundColor: "#e7f1ff",
+                          borderLeft: "4px solid #4e73df",
+                        }}
+                      >
+                        <p style={{ margin: 0, color: "#4e73df" }}>
+                          <strong>TPA Details:</strong>{" "}
+                          {selectedAppointment.tpa_details}
+                        </p>
+                      </div>
+                    </div>
                     {/* <div className="col-md-12 text-end mt-4">
                       <Link
                         to="/ReplyAppointment"
@@ -1059,4 +1285,4 @@ function Assistant() {
   );
 }
 
-export default Assistant;
+export default Appointment;

@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-function Assistant() {
+function Role() {
   const [appointment, setAppointmentList] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showAppointmentDetails, setShowAppointmentDetails] = useState(false); // Track showing details
@@ -32,7 +32,7 @@ function Assistant() {
 
   useEffect(() => {
     const getAppointmentList = async () => {
-      const res = await fetch("http://3.109.174.127:3005/getAllassistant");
+      const res = await fetch("http://3.109.174.127:3005/getallRole");
       const getData = await res.json();
       setAppointmentList(getData);
     };
@@ -87,7 +87,6 @@ function Assistant() {
   // Calculate total pages
   const totalPages = Math.ceil(appointment.length / itemsPerPage);
 
-  // Handle Delete Confirmation
   const handleDeleteClick = (id) => {
     setDeleteId(id);
     setShowDeleteModal(true);
@@ -96,19 +95,16 @@ function Assistant() {
   // Confirm Deletion
   const confirmDelete = async () => {
     try {
-      const res = await fetch(
-        `http://3.109.174.127:3005/deleteAssistant/${deleteId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`http://3.109.174.127:3005/deleteRole/${deleteId}`, {
+        method: "DELETE",
+      });
       if (res.ok) {
         setAppointmentList((prev) =>
-          prev.filter((item) => item.assistant_id !== deleteId)
+          prev.filter((item) => item.role_id !== deleteId)
         );
         setShowDeleteModal(false);
         setDeleteId(null);
-        console.log("Assistant deleted successfully");
+        console.log("Role deleted successfully");
       } else {
         console.error("Failed to delete assistant");
       }
@@ -135,12 +131,12 @@ function Assistant() {
                 <div class="col-sm-12">
                   <ul class="breadcrumb">
                     <li class="breadcrumb-item">
-                      <a href="appointments.html">Technician</a>
+                      <a href="appointments.html">Role</a>
                     </li>
                     <li class="breadcrumb-item">
                       <i class="feather-chevron-right"></i>
                     </li>
-                    <li class="breadcrumb-item active">Technician List</li>
+                    <li class="breadcrumb-item active">Role List</li>
                   </ul>
                 </div>
               </div>
@@ -154,7 +150,7 @@ function Assistant() {
                       <div class="row align-items-center">
                         <div class="col">
                           <div class="doctor-table-blk">
-                            <h3>Technician</h3>
+                            <h3>Role</h3>
                             <div class="doctor-search-blk">
                               <div class="top-nav-search table-search-blk">
                                 <form>
@@ -212,7 +208,7 @@ function Assistant() {
                           </a>
 
                           <div>
-                            {/* Image Click to Show Appointment Details */}
+                            {/* Image Click to Show Role Details */}
                             <a onClick={handleImageClick}>
                               <img
                                 src="assets/img/icons/pdf-icon-04.svg"
@@ -220,7 +216,7 @@ function Assistant() {
                               />
                             </a>
 
-                            {/* MUI Dialog for Appointment Details */}
+                            {/* MUI Dialog for Role Details */}
                             <Dialog
                               open={showAppointmentDetails}
                               onClose={handleCloseModal}
@@ -235,11 +231,10 @@ function Assistant() {
                                   padding: "16px",
                                 }}
                               >
-                                <Typography variant="h6">Assistants</Typography>
+                                <Typography variant="h6">Roles</Typography>
                               </DialogTitle>
-
                               <DialogContent sx={{ padding: "16px" }}>
-                                {/* Table to Show Appointment Details */}
+                                {/* Table to Show Role Details */}
                                 <Table>
                                   <TableHead
                                     sx={{ backgroundColor: "#f4f6f9" }}
@@ -251,7 +246,7 @@ function Assistant() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Name
+                                        Role Time
                                       </TableCell>
                                       <TableCell
                                         sx={{
@@ -259,7 +254,7 @@ function Assistant() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Mobile No
+                                        Client Name
                                       </TableCell>
                                       <TableCell
                                         sx={{
@@ -267,7 +262,7 @@ function Assistant() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Email
+                                        Medical Test Details
                                       </TableCell>
                                       <TableCell
                                         sx={{
@@ -275,7 +270,7 @@ function Assistant() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Username
+                                        Contact No
                                       </TableCell>
                                       <TableCell
                                         sx={{
@@ -283,7 +278,64 @@ function Assistant() {
                                           color: "#2E37A4",
                                         }}
                                       >
-                                        Password
+                                        Proposal No
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Address
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Country
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        State
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        City
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Pincode
+                                      </TableCell>
+
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        Insurance Name
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontWeight: "bold",
+                                          color: "#2E37A4",
+                                        }}
+                                      >
+                                        TPA Details
                                       </TableCell>
                                     </TableRow>
                                   </TableHead>
@@ -291,19 +343,45 @@ function Assistant() {
                                     {appointment.map((appointment) => (
                                       <TableRow key={appointment.id}>
                                         <TableCell>
+                                          {new Date(
+                                            appointment.time
+                                          ).toLocaleString("en-US", {
+                                            timeZone: "Asia/Kolkata",
+                                          })}
+                                        </TableCell>
+                                        <TableCell>
                                           {appointment.name}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.treatment}
                                         </TableCell>
                                         <TableCell>
                                           {appointment.mobileno}
                                         </TableCell>
                                         <TableCell>
-                                          {appointment.email}
+                                          {appointment.appointment_no}
                                         </TableCell>
                                         <TableCell>
-                                          {appointment.username}
+                                          {appointment.address}
                                         </TableCell>
                                         <TableCell>
-                                          {appointment.password}
+                                          {appointment.country}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.state}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.city}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.pincode}
+                                        </TableCell>
+
+                                        <TableCell>
+                                          {appointment.insurance_name}
+                                        </TableCell>
+                                        <TableCell>
+                                          {appointment.tpa_details}
                                         </TableCell>
                                       </TableRow>
                                     ))}
@@ -341,12 +419,9 @@ function Assistant() {
                         padding: "10px",
                       }}
                     >
-                      <Link
-                        to="/addassistant"
-                        style={{ textDecoration: "none" }}
-                      >
+                      <Link to="/addRole" style={{ textDecoration: "none" }}>
                         <Button variant="contained" color="primary">
-                          Add Assistant
+                          Add Role
                         </Button>
                       </Link>
                     </div>
@@ -387,43 +462,7 @@ function Assistant() {
                                 padding: "12px 15px",
                               }}
                             >
-                              Name
-                            </th>
-                            <th
-                              style={{
-                                fontWeight: "bold",
-                                color: "#2E37A4",
-                                padding: "12px 15px",
-                              }}
-                            >
-                              Mobile No
-                            </th>
-                            <th
-                              style={{
-                                fontWeight: "bold",
-                                color: "#2E37A4",
-                                padding: "12px 15px",
-                              }}
-                            >
-                              Email
-                            </th>
-                            <th
-                              style={{
-                                fontWeight: "bold",
-                                color: "#2E37A4",
-                                padding: "12px 15px",
-                              }}
-                            >
-                              Username
-                            </th>
-                            <th
-                              style={{
-                                fontWeight: "bold",
-                                color: "#2E37A4",
-                                padding: "12px 15px",
-                              }}
-                            >
-                              Password
+                              Role Name
                             </th>
 
                             <th
@@ -456,20 +495,9 @@ function Assistant() {
                               >
                                 {index + 1}
                               </td>
+
                               <td style={{ padding: "12px 15px" }}>
-                                {getcate.name}
-                              </td>
-                              <td style={{ padding: "12px 15px" }}>
-                                {getcate.mobileno}
-                              </td>
-                              <td style={{ padding: "12px 15px" }}>
-                                {getcate.email}
-                              </td>
-                              <td style={{ padding: "12px 15px" }}>
-                                {getcate.username}
-                              </td>
-                              <td style={{ padding: "12px 15px" }}>
-                                {getcate.password}
+                                {getcate.role}
                               </td>
 
                               <td
@@ -509,7 +537,7 @@ function Assistant() {
                                       View
                                     </a>
                                     <Link
-                                      to={`/edit-assistant/${getcate.assistant_id}`}
+                                      to={`/edit-role/${getcate.role_id}`}
                                       className="dropdown-item"
                                       style={{
                                         display: "flex",
@@ -523,18 +551,17 @@ function Assistant() {
                                       />
                                       Edit
                                     </Link>
-
                                     <a
                                       className="dropdown-item"
-                                      // href="#"
-                                      // data-bs-toggle="modal"
-                                      // data-bs-target="#delete_patient"
+                                      //   href="#"
+                                      //   data-bs-toggle="modal"
+                                      //   data-bs-target="#delete_patient"
                                       style={{
                                         display: "flex",
                                         alignItems: "center",
                                       }}
                                       onClick={() =>
-                                        handleDeleteClick(getcate.assistant_id)
+                                        handleDeleteClick(getcate.role_id)
                                       }
                                     >
                                       <DeleteIcon
@@ -578,7 +605,7 @@ function Assistant() {
           <Dialog open={showDeleteModal} onClose={cancelDelete}>
             <DialogTitle>Confirm Deletion</DialogTitle>
             <DialogContent>
-              Are you sure you want to delete this laboratory?
+              Are you sure you want to delete this Assistant?
             </DialogContent>
             <DialogActions>
               <Button onClick={cancelDelete} color="secondary">
@@ -849,7 +876,7 @@ function Assistant() {
           </div>
         </div>
 
-        {/* Modal for Viewing Appointment Details */}
+        {/* Modal for Viewing Role Details */}
         <div
           className="modal fade"
           id="viewAppointmentModal"
@@ -890,7 +917,7 @@ function Assistant() {
                   }}
                 >
                   <i className="fa-solid fa-calendar-check me-2"></i>
-                  Assistant Details
+                  Role Details
                 </h5>
                 <button
                   type="button"
@@ -911,60 +938,6 @@ function Assistant() {
               >
                 {selectedAppointment ? (
                   <div className="row g-4">
-                    <div className="col-md-6">
-                      <div
-                        className="p-3 rounded"
-                        style={{
-                          backgroundColor: "#e7f1ff",
-                          borderLeft: "4px solid #4e73df",
-                        }}
-                      >
-                        <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Assistant No:</strong>{" "}
-                          {selectedAppointment.lab_id}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div
-                        className="p-3 rounded"
-                        style={{
-                          backgroundColor: "#e7f1ff",
-                          borderLeft: "4px solid #4e73df",
-                        }}
-                      >
-                        <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Name:</strong> {selectedAppointment.name}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div
-                        className="p-3 rounded"
-                        style={{
-                          backgroundColor: "#e7f1ff",
-                          borderLeft: "4px solid #4e73df",
-                        }}
-                      >
-                        <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Mobile No:</strong>{" "}
-                          {selectedAppointment.mobileno}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div
-                        className="p-3 rounded"
-                        style={{
-                          backgroundColor: "#e7f1ff",
-                          borderLeft: "4px solid #4e73df",
-                        }}
-                      >
-                        <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Email:</strong> {selectedAppointment.email}
-                        </p>
-                      </div>
-                    </div>
                     <div className="col-md-12">
                       <div
                         className="p-3 rounded"
@@ -974,22 +947,7 @@ function Assistant() {
                         }}
                       >
                         <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Username:</strong>{" "}
-                          {selectedAppointment.username}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="col-md-12">
-                      <div
-                        className="p-3 rounded"
-                        style={{
-                          backgroundColor: "#e7f1ff",
-                          borderLeft: "4px solid #4e73df",
-                        }}
-                      >
-                        <p style={{ margin: 0, color: "#4e73df" }}>
-                          <strong>Password:</strong>{" "}
-                          {selectedAppointment.password}
+                          <strong>Role name:</strong> {selectedAppointment.role}
                         </p>
                       </div>
                     </div>
@@ -1059,4 +1017,4 @@ function Assistant() {
   );
 }
 
-export default Assistant;
+export default Role;

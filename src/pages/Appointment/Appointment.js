@@ -30,7 +30,7 @@ function Appointment() {
 
   useEffect(() => {
     const getAppointmentList = async () => {
-      const res = await fetch("http://localhost:3005/getallappointment");
+      const res = await fetch("http://3.109.174.127:3005/getallappointment");
       const getData = await res.json();
       setAppointmentList(getData);
     };
@@ -58,7 +58,7 @@ function Appointment() {
   };
 
   const handleDownloadExcel = () => {
-    window.open("http://localhost:3005/downloadAppointments", "_blank");
+    window.open("http://3.109.174.127:3005/downloadAppointments", "_blank");
   };
 
   const handleImageClick = () => {

@@ -8,13 +8,17 @@ import Navbar from "./navBar";
 function Home() {
   const [appointments, setAppointments] = useState([]);
   const [appointmentCount, setAppointmentCount] = useState(0); // State to store the appointment count
+  const [laboratoryCount, setLaboratoryCount] = useState(0); // State to store the appointment count
+  const [assignedAppointmentCount, setAssignedAppointmentCount] = useState(0);
+  const [unassignedAppointmentCount, setUnAssignedAppointmentCount] =
+    useState(0);
 
   // Fetch the latest 5 appointments on component mount
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3005/getlatestappointments",
+          "http://3.109.174.127:3005/getlatestappointments",
           { withCredentials: true }
         );
         setAppointments(response.data); // Set the latest appointments in state
@@ -27,7 +31,7 @@ function Home() {
     const fetchAppointmentCount = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3005/getAppointmentCount",
+          "http://3.109.174.127:3005/getAppointmentCount",
           { withCredentials: true }
         );
         setAppointmentCount(response.data); // Set the appointment count in state
@@ -36,8 +40,48 @@ function Home() {
       }
     };
 
+    // Fetch the appointment count
+    const fetchLaboratoryCount = async () => {
+      try {
+        const response = await axios.get(
+          "http://3.109.174.127:3005/getLaboratoriesCount",
+          { withCredentials: true }
+        );
+        setLaboratoryCount(response.data); // Set the appointment count in state
+      } catch (error) {
+        console.error("Error fetching appointment count:", error);
+      }
+    };
+
+    const fetchAssignedAppintmentCount = async () => {
+      try {
+        const response = await axios.get(
+          "http://3.109.174.127:3005/getAssignedAppointmentCount",
+          { withCredentials: true }
+        );
+        setAssignedAppointmentCount(response.data); // Set the appointment count in state
+      } catch (error) {
+        console.error("Error fetching appointment count:", error);
+      }
+    };
+
+    const fetchUnAssignedAppintmentCount = async () => {
+      try {
+        const response = await axios.get(
+          "http://3.109.174.127:3005/getUnassignedAppointmentCount",
+          { withCredentials: true }
+        );
+        setUnAssignedAppointmentCount(response.data); // Set the appointment count in state
+      } catch (error) {
+        console.error("Error fetching appointment count:", error);
+      }
+    };
+
     fetchAppointments();
     fetchAppointmentCount();
+    fetchLaboratoryCount();
+    fetchAssignedAppintmentCount();
+    fetchUnAssignedAppintmentCount();
   }, []);
 
   return (
@@ -216,7 +260,7 @@ function Home() {
                   <div className="dash-content dash-count">
                     <h4>TPA Client</h4>
                     <h2>
-                      <span>0</span>
+                      <span className="counter-up">{laboratoryCount}</span>
                     </h2>
                     {/* <p>
                       <span className="negative-view">
@@ -228,23 +272,51 @@ function Home() {
                 </div>
               </div>
               <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                <div className="dash-widget">
-                  <div className="dash-boxs comman-flex-center">
-                    <img src="assets/img/icons/empty-wallet.svg" alt="" />
-                  </div>
-                  <div className="">
-                    <h4>Assigned Appointment</h4>
-                    <h2>
-                      <span className="counter-up">0</span>
-                    </h2>
-                    {/* <p>
+                <Link to="/assignedappointments/1">
+                  <div className="dash-widget">
+                    <div className="dash-boxs comman-flex-center">
+                      <img src="assets/img/icons/empty-wallet.svg" alt="" />
+                    </div>
+                    <div className="dash-content dash-count">
+                      <h4>Assigned Appointment</h4>
+                      <h2>
+                        <span className="counter-up">
+                          {assignedAppointmentCount}
+                        </span>
+                      </h2>
+                      {/* <p>
                       <span className="passive-view">
                         <i className="feather-arrow-up-right me-1"></i>30%
                       </span>{" "}
                       vs last month
                     </p> */}
+                    </div>
                   </div>
-                </div>
+                </Link>
+              </div>
+
+              <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                <Link to="/assignedappointments/2">
+                  <div className="dash-widget">
+                    <div className="dash-boxs comman-flex-center">
+                      <img src="assets/img/icons/empty-wallet.svg" alt="" />
+                    </div>
+                    <div className="dash-content dash-count">
+                      <h4>Unassigned Appointment</h4>
+                      <h2>
+                        <span className="counter-up">
+                          {unassignedAppointmentCount}
+                        </span>
+                      </h2>
+                      {/* <p>
+                      <span className="passive-view">
+                        <i className="feather-arrow-up-right me-1"></i>30%
+                      </span>{" "}
+                      vs last month
+                    </p> */}
+                    </div>
+                  </div>
+                </Link>
               </div>
             </div>
             <div className="row">
@@ -252,7 +324,7 @@ function Home() {
                 <div className="card">
                   <div className="card-header pb-0">
                     <h4 className="card-title d-inline-block">
-                      Today Patients{" "}
+                      Today Appointments{" "}
                     </h4>{" "}
                     <Link
                       to="patients.html"
@@ -266,7 +338,7 @@ function Home() {
                       <table className="table mb-0 border-0 datatable custom-table">
                         <thead>
                           <tr>
-                            <th>#</th>
+                            <th>Sr.No</th>
                             <th>Appointment No</th>
                             <th>Patient Name</th>
                             <th>Mobile No</th>

@@ -32,7 +32,7 @@ function Laboratory() {
 
   useEffect(() => {
     const getAppointmentList = async () => {
-      const res = await fetch("http://localhost:3005/getAllLaboratories");
+      const res = await fetch("http://3.109.174.127:3005/getAllLaboratories");
       const getData = await res.json();
       setAppointmentList(getData);
     };
@@ -60,7 +60,7 @@ function Laboratory() {
   };
 
   const handleDownloadExcel = () => {
-    window.open("http://localhost:3005/downloadAppointments", "_blank");
+    window.open("http://3.109.174.127:3005/downloadAppointments", "_blank");
   };
 
   const handleImageClick = () => {
@@ -97,7 +97,7 @@ function Laboratory() {
   const confirmDelete = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3005/deleteLaboratory/${deleteId}`,
+        `http://3.109.174.127:3005/deleteLaboratory/${deleteId}`,
         {
           method: "DELETE",
         }
@@ -479,7 +479,7 @@ function Laboratory() {
                                 padding: "12px 15px",
                               }}
                             >
-                              #
+                              Sr.No
                             </th>
                             <th
                               style={{

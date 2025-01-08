@@ -5,13 +5,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import Navbar from "../navBar";
 
-const AddAssistant = () => {
+const AddRole = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    mobileno: "",
-    email: "",
-    username: "",
-    password: "",
+    role: "",
   });
 
   const [message, setMessage] = useState("");
@@ -29,25 +25,12 @@ const AddAssistant = () => {
   };
 
   const validateForm = () => {
-    const { name, mobileno, email, username, password } = formData;
+    const { role } = formData;
 
-    if (!name || !mobileno || !email || !username || !password) {
+    if (!role) {
       return "All fields are required!";
     }
-
-    // Mobile number validation (assuming a valid mobile number format)
-    const phoneRegex = /^[0-9]{10}$/;
-    if (!phoneRegex.test(mobileno)) {
-      return "Mobile number must be 10 digits.";
-    }
-
-    // Email validation (basic email format)
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      return "Please enter a valid email address.";
-    }
-
-    return null;
+    return;
   };
 
   const handleSubmit = async (e) => {
@@ -63,7 +46,7 @@ const AddAssistant = () => {
 
     try {
       const response = await axios.post(
-        "http://3.109.174.127:3005/addAssistant", // Updated API endpoint
+        "http://3.109.174.127:3005/addRole", // Updated API endpoint
         formData
       );
       setMessage(response.data);
@@ -73,16 +56,12 @@ const AddAssistant = () => {
 
       // Reset the form after submission
       setFormData({
-        name: "",
-        mobileno: "",
-        email: "",
-        username: "",
-        password: "",
+        role: "",
       });
 
       // Navigate to the Assistant page after 2 seconds (to give time for the modal to show)
       setTimeout(() => {
-        navigate("/assistant"); // Navigate to the assistant page
+        navigate("/role"); // Navigate to the assistant page
       }, 4000);
     } catch (err) {
       setError(err.response?.data || "Failed to add assistant");
@@ -92,7 +71,7 @@ const AddAssistant = () => {
   // Close the modal and navigate to the Assistant page
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate("/assistant"); // Navigate to the assistant page when closing the modal
+    navigate("/role"); // Navigate to the assistant page when closing the modal
   };
 
   return (
@@ -110,7 +89,7 @@ const AddAssistant = () => {
               paddingBottom: "10px",
             }}
           >
-            Add Assistant
+            Add Role
           </h2>
 
           {/* Form Section */}
@@ -125,26 +104,8 @@ const AddAssistant = () => {
           >
             {/* First Row: 2 Fields */}
             {[
-              { name: "name", type: "text", placeholder: "Name", row: 1 },
-              {
-                name: "mobileno",
-                type: "text",
-                placeholder: "Mobile No.",
-                row: 1,
-              },
-              { name: "email", type: "email", placeholder: "Email", row: 2 },
-              {
-                name: "username",
-                type: "text",
-                placeholder: "Username",
-                row: 2,
-              },
-              {
-                name: "password",
-                type: "password",
-                placeholder: "Password",
-                row: 2,
-              },
+              { name: "role", type: "text", placeholder: "Role", row: 1 },
+             
             ].map((field) => (
               <div
                 key={field.name}
@@ -196,7 +157,7 @@ const AddAssistant = () => {
                   fontSize: "16px",
                 }}
               >
-                Add Assistant
+                Add Role
               </button>
             </div>
           </form>
@@ -242,8 +203,8 @@ const AddAssistant = () => {
               width: "100%",
             }}
           >
-            <h3>Assistant Added Successfully!</h3>
-            <p>Your assistant has been added successfully.</p>
+            <h3>Role Added Successfully!</h3>
+            <p>Your role has been added successfully.</p>
             <button
               onClick={handleCloseModal} // Call the function to close the modal and navigate
               style={{
@@ -266,4 +227,4 @@ const AddAssistant = () => {
   );
 };
 
-export default AddAssistant;
+export default AddRole;

@@ -17,7 +17,7 @@ const AppointmentReply = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3005/addReply", {
+      const response = await fetch("http://3.109.174.127:3005/addReply", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
