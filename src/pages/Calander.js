@@ -6,6 +6,7 @@ import moment from "moment";
 import axios from "axios";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./navBar";
 
 const localizer = momentLocalizer(moment);
 
@@ -129,98 +130,104 @@ const CalendarComponent = () => {
       }}
     >
       {/* Header Controls */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "20px",
-          padding: "10px 20px",
-          backgroundColor: "#fff",
-          borderRadius: "8px",
-          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-        }}
-      >
-        <h2 style={{ margin: 0, color: "#4caf50" }}>📅 My Calendar</h2>
-        <div style={{ display: "flex", gap: "15px" }}>
-          <label>
-            <strong>Month:</strong>
-            <select
-              value={selectedMonth}
-              onChange={(e) => {
-                const newMonth = parseInt(e.target.value);
-                setSelectedMonth(newMonth);
-                setCurrentDate(new Date(selectedYear, newMonth, 1));
-              }}
-              style={{
-                padding: "6px 12px",
-                borderRadius: "4px",
-                border: "1px solid #ddd",
-                cursor: "pointer",
-              }}
-            >
-              {moment.months().map((month, index) => (
-                <option key={index} value={index}>
-                  {month}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            <strong>Year:</strong>
-            <select
-              value={selectedYear}
-              onChange={(e) => {
-                const newYear = parseInt(e.target.value);
-                setSelectedYear(newYear);
-                setCurrentDate(new Date(newYear, selectedMonth, 1));
-              }}
-              style={{
-                padding: "6px 12px",
-                borderRadius: "4px",
-                border: "1px solid #ddd",
-                cursor: "pointer",
-              }}
-            >
-              {Array.from(
-                { length: 10 },
-                (_, i) => new Date().getFullYear() - 5 + i
-              ).map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      </div>
+      <div class="main-wrapper">
+        <Navbar />
 
-      {/* Calendar Component */}
-      <div
-        style={{
-          marginTop: "10px",
-          borderRadius: "12px",
-          overflow: "hidden",
-          boxShadow: "0 4px 15px rgba(0, 0, 0, 0.15)",
-        }}
-      >
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          date={currentDate}
-          onNavigate={(date) => setCurrentDate(date)}
-          views={["month", "week", "day"]}
-          style={{ height: "80vh", backgroundColor: "#fff" }}
-          eventPropGetter={eventPropGetter}
-          onSelectEvent={handleEventClick}
-          onSelectSlot={handleSelectSlot}
-          selectable
-          components={{
-            day: CustomDateCellWrapper,
-          }}
-        />
+        <div class="page-wrapper">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "20px",
+              padding: "10px 20px",
+              backgroundColor: "#fff",
+              borderRadius: "8px",
+              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+            }}
+          >
+            <h2 style={{ margin: 0, color: "#4caf50" }}>📅 My Calendar</h2>
+            <div style={{ display: "flex", gap: "15px" }}>
+              <label>
+                <strong>Month:</strong>
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => {
+                    const newMonth = parseInt(e.target.value);
+                    setSelectedMonth(newMonth);
+                    setCurrentDate(new Date(selectedYear, newMonth, 1));
+                  }}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: "4px",
+                    border: "1px solid #ddd",
+                    cursor: "pointer",
+                  }}
+                >
+                  {moment.months().map((month, index) => (
+                    <option key={index} value={index}>
+                      {month}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <strong>Year:</strong>
+                <select
+                  value={selectedYear}
+                  onChange={(e) => {
+                    const newYear = parseInt(e.target.value);
+                    setSelectedYear(newYear);
+                    setCurrentDate(new Date(newYear, selectedMonth, 1));
+                  }}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: "4px",
+                    border: "1px solid #ddd",
+                    cursor: "pointer",
+                  }}
+                >
+                  {Array.from(
+                    { length: 10 },
+                    (_, i) => new Date().getFullYear() - 5 + i
+                  ).map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </div>
+
+          {/* Calendar Component */}
+          <div
+            style={{
+              marginTop: "10px",
+              borderRadius: "12px",
+              overflow: "hidden",
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.15)",
+            }}
+          >
+            <Calendar
+              localizer={localizer}
+              events={events}
+              startAccessor="start"
+              endAccessor="end"
+              date={currentDate}
+              onNavigate={(date) => setCurrentDate(date)}
+              views={["month", "week", "day"]}
+              style={{ height: "80vh", backgroundColor: "#fff" }}
+              eventPropGetter={eventPropGetter}
+              onSelectEvent={handleEventClick}
+              onSelectSlot={handleSelectSlot}
+              selectable
+              components={{
+                day: CustomDateCellWrapper,
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

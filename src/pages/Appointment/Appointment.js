@@ -23,9 +23,11 @@ import { Link } from "react-router-dom";
 
 function Appointment() {
   const [appointment, setAppointmentList] = useState([]);
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showAppointmentDetails, setShowAppointmentDetails] = useState(false); // Track showing details
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState(""); // Track the search query
   const itemsPerPage = 5; // Number of items per page
 
   useEffect(() => {
@@ -33,9 +35,10 @@ function Appointment() {
       const res = await fetch("http://3.109.174.127:3005/getallappointment");
       const getData = await res.json();
       setAppointmentList(getData);
+      setFilteredAppointments(getData); // Initialize filtered appointments
     };
     getAppointmentList();
-  });
+  }, []);
 
   useEffect(() => {
     // Ensure modal initializes correctly
@@ -47,6 +50,31 @@ function Appointment() {
       });
     }
   }, []);
+
+  // Handle search input change
+  const handleSearchChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    // Filter appointments based on search query
+    const filtered = appointment.filter((appointment) => {
+      return (
+        appointment.name.toLowerCase().includes(query) ||
+        appointment.treatment.toLowerCase().includes(query) ||
+        appointment.mobileno.toLowerCase().includes(query) ||
+        appointment.appointment_no.toLowerCase().includes(query) ||
+        appointment.address.toLowerCase().includes(query) ||
+        appointment.country.toLowerCase().includes(query) ||
+        appointment.state.toLowerCase().includes(query) ||
+        appointment.city.toLowerCase().includes(query) ||
+        appointment.pincode.toLowerCase().includes(query) ||
+        appointment.insurance_name.toLowerCase().includes(query) ||
+        appointment.tpa_details.toLowerCase().includes(query)
+      );
+    });
+
+    setFilteredAppointments(filtered);
+  };
 
   const handleViewDetails = (appointment) => {
     setSelectedAppointment(appointment);
@@ -72,7 +100,7 @@ function Appointment() {
   // Pagination logic
   const indexOfLastAppointment = currentPage * itemsPerPage;
   const indexOfFirstAppointment = indexOfLastAppointment - itemsPerPage;
-  const currentAppointments = appointment.slice(
+  const currentAppointments = filteredAppointments.slice(
     indexOfFirstAppointment,
     indexOfLastAppointment
   );
@@ -83,7 +111,8 @@ function Appointment() {
   };
 
   // Calculate total pages
-  const totalPages = Math.ceil(appointment.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
+
   return (
     <div>
       <div class="main-wrapper">
@@ -123,6 +152,8 @@ function Appointment() {
                                     type="text"
                                     class="form-control"
                                     placeholder="Search here"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
                                   />
                                   <a class="btn">
                                     <img
@@ -950,7 +981,27 @@ function Appointment() {
               </div>
             </div>
           </div>
+          <footer
+            style={{
+              marginTop: "20px",
+              padding: "10px 20px",
+              backgroundColor: "#f1f1f1",
+              textAlign: "center",
+              fontSize: "14px",
+            }}
+          >
+            © {new Date().getFullYear()}{" "}
+            <a
+              href="https://sitsolutions.co.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              S IT Solutions Pvt. Ltd.
+            </a>{" "}
+            All Rights Reserved.
+          </footer>
         </div>
+
         <div id="delete_patient" class="modal fade delete-modal" role="dialog">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

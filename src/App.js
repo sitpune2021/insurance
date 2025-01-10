@@ -16,6 +16,13 @@ import AddAssistant from "./pages/Assistant/AddAssistant";
 import EditAssistant from "./pages/Assistant/EditAssistant";
 import LaboratoryDashboard from "./pages/LaboratoryDashboard/LaboratoryDashboard";
 import laboratoryNavbar from "./pages/LaboratoryDashboard/Navbar";
+import AssignedAppointment from "./pages/Appointment/AssignedAppointment";
+import Role from "./pages/Role/Role";
+import AddRole from "./pages/Role/AddRole";
+import EditRole from "./pages/Role/EditRole";
+import Permission from "./pages/Role/Permission";
+import Profile from "./pages/Profile/Profile";
+import EditProfile from "./pages/Profile/EditProfile";
 function App() {
   return (
     <BrowserRouter>
@@ -39,6 +46,16 @@ function App() {
         <Route path="/assistant" element={<Assistant />}></Route>
         <Route path="/addassistant" element={<AddAssistant />}></Route>
         <Route path="/edit-assistant/:id" element={<EditAssistant />} />
+        <Route
+          path="/assignedappointments/:status"
+          element={<AssignedAppointment />}
+        />
+        <Route path="/Role" element={<Role />}></Route>
+        <Route path="/addRole" element={<AddRole />}></Route>
+        <Route path="/edit-role/:id" element={<EditRole />} />
+        <Route path="/Permission" element={<Permission />}></Route>
+        <Route path="/Profile" element={<Profile />}></Route>
+        <Route path="/edit-profile" element={<EditProfile />}></Route>
       </Routes>
     </BrowserRouter>
   );

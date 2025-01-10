@@ -103,39 +103,38 @@ const AddRole = () => {
             }}
           >
             {/* First Row: 2 Fields */}
-            {[
-              { name: "role", type: "text", placeholder: "Role", row: 1 },
-             
-            ].map((field) => (
-              <div
-                key={field.name}
-                style={{
-                  flex:
-                    field.row === 2
-                      ? "1 1 calc(50% - 20px)"
-                      : "1 1 calc(50% - 20px)",
-                  minWidth: "200px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "5px",
-                }}
-              >
-                <input
-                  type={field.type}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  value={formData[field.name]}
-                  onChange={handleChange}
-                  required
+            {[{ name: "role", type: "text", placeholder: "Role", row: 1 }].map(
+              (field) => (
+                <div
+                  key={field.name}
                   style={{
-                    padding: "12px",
-                    border: "1px solid #ccc",
-                    borderRadius: "6px",
-                    fontSize: "14px",
+                    flex:
+                      field.row === 2
+                        ? "1 1 calc(50% - 20px)"
+                        : "1 1 calc(50% - 20px)",
+                    minWidth: "200px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "5px",
                   }}
-                />
-              </div>
-            ))}
+                >
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    required
+                    style={{
+                      padding: "12px",
+                      border: "1px solid #ccc",
+                      borderRadius: "6px",
+                      fontSize: "14px",
+                    }}
+                  />
+                </div>
+              )
+            )}
 
             {/* Submit Button */}
             <div
@@ -176,6 +175,25 @@ const AddRole = () => {
             </p>
           )}
         </div>
+        <footer
+          style={{
+            marginTop: "20px",
+            padding: "10px 20px",
+            backgroundColor: "#f1f1f1",
+            textAlign: "center",
+            fontSize: "14px",
+          }}
+        >
+          © {new Date().getFullYear()}{" "}
+          <a
+            href="https://sitsolutions.co.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            S IT Solutions Pvt. Ltd.
+          </a>{" "}
+          All Rights Reserved.
+        </footer>
       </div>
 
       {/* Modal for successful addition */}

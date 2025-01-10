@@ -28,6 +28,9 @@ function Laboratory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showDeleteModal, setShowDeleteModal] = useState(false); // Track delete modal
   const [deleteId, setDeleteId] = useState(null);
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // Track the search query
+
   const itemsPerPage = 5; // Number of items per page
 
   useEffect(() => {
@@ -35,9 +38,10 @@ function Laboratory() {
       const res = await fetch("http://3.109.174.127:3005/getAllLaboratories");
       const getData = await res.json();
       setAppointmentList(getData);
+      setFilteredAppointments(getData);
     };
     getAppointmentList();
-  });
+  }, []);
 
   useEffect(() => {
     // Ensure modal initializes correctly
@@ -71,10 +75,37 @@ function Laboratory() {
     setShowAppointmentDetails(false);
   };
 
+  const handleSearchChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    // Filter appointments based on search query
+    const filtered = appointment.filter((appointment) => {
+      return (
+        appointment.title.toLowerCase().includes(query) ||
+        appointment.country.toLowerCase().includes(query) ||
+        appointment.state.toLowerCase().includes(query) ||
+        appointment.city.toLowerCase().includes(query) ||
+        appointment.pincode.toLowerCase().includes(query) ||
+        appointment.address.toLowerCase().includes(query) ||
+        appointment.state.toLowerCase().includes(query) ||
+        appointment.name.toLowerCase().includes(query) ||
+        appointment.mobileno.toLowerCase().includes(query) ||
+        appointment.email.toLowerCase().includes(query) ||
+        appointment.username.toLowerCase().includes(query) ||
+        appointment.client_name.toLowerCase().includes(query) ||
+        appointment.client_email.toLowerCase().includes(query) ||
+        appointment.client_address.toLowerCase().includes(query)
+      );
+    });
+
+    setFilteredAppointments(filtered);
+  };
+
   // Pagination logic
   const indexOfLastAppointment = currentPage * itemsPerPage;
   const indexOfFirstAppointment = indexOfLastAppointment - itemsPerPage;
-  const currentAppointments = appointment.slice(
+  const currentAppointments = filteredAppointments.slice(
     indexOfFirstAppointment,
     indexOfLastAppointment
   );
@@ -85,7 +116,7 @@ function Laboratory() {
   };
 
   // Calculate total pages
-  const totalPages = Math.ceil(appointment.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
 
   // Handle Delete Confirmation
   const handleDeleteClick = (id) => {
@@ -140,7 +171,9 @@ function Laboratory() {
                     <li class="breadcrumb-item">
                       <i class="feather-chevron-right"></i>
                     </li>
-                    <li class="breadcrumb-item active">Diagonastic Centre List</li>
+                    <li class="breadcrumb-item active">
+                      Diagnoastic Centre List
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -154,7 +187,7 @@ function Laboratory() {
                       <div class="row align-items-center">
                         <div class="col">
                           <div class="doctor-table-blk">
-                            <h3>Diagonastic Centre</h3>
+                            <h3>Diagnoastic Centre</h3>
                             <div class="doctor-search-blk">
                               <div class="top-nav-search table-search-blk">
                                 <form>
@@ -162,6 +195,8 @@ function Laboratory() {
                                     type="text"
                                     class="form-control"
                                     placeholder="Search here"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
                                   />
                                   <a class="btn">
                                     <img
@@ -235,9 +270,7 @@ function Laboratory() {
                                   padding: "16px",
                                 }}
                               >
-                                <Typography variant="h6">
-                                  Centres
-                                </Typography>
+                                <Typography variant="h6">Centres</Typography>
                               </DialogTitle>
 
                               <DialogContent sx={{ padding: "16px" }}>
@@ -1035,6 +1068,25 @@ function Laboratory() {
               </div>
             </div>
           </div>
+          <footer
+            style={{
+              marginTop: "20px",
+              padding: "10px 20px",
+              backgroundColor: "#f1f1f1",
+              textAlign: "center",
+              fontSize: "14px",
+            }}
+          >
+            © {new Date().getFullYear()}{" "}
+            <a
+              href="https://sitsolutions.co.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              S IT Solutions Pvt. Ltd.
+            </a>{" "}
+            All Rights Reserved.
+          </footer>
         </div>
         <div id="delete_patient" class="modal fade delete-modal" role="dialog">
           <div class="modal-dialog modal-dialog-centered">

@@ -27,6 +27,9 @@ function Appointment() {
   const [showAppointmentDetails, setShowAppointmentDetails] = useState(false); // Track showing details
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // Track the search query
+
   const { status } = useParams();
 
   useEffect(() => {
@@ -44,6 +47,7 @@ function Appointment() {
       }
     };
     getAppointmentList();
+    
   }, [status]);
 
   useEffect(() => {
@@ -146,7 +150,10 @@ function Appointment() {
                                   href="add-appointment.html"
                                   class="btn btn-primary add-pluss ms-2"
                                 >
-                                  <img src="../assets/img/icons/plus.svg" alt="" />
+                                  <img
+                                    src="../assets/img/icons/plus.svg"
+                                    alt=""
+                                  />
                                 </a>
                                 <a
                                   href="javascript:;"
@@ -959,6 +966,25 @@ function Appointment() {
               </div>
             </div>
           </div>
+          <footer
+            style={{
+              marginTop: "20px",
+              padding: "10px 20px",
+              backgroundColor: "#f1f1f1",
+              textAlign: "center",
+              fontSize: "14px",
+            }}
+          >
+            © {new Date().getFullYear()}{" "}
+            <a
+              href="https://sitsolutions.co.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              S IT Solutions Pvt. Ltd.
+            </a>{" "}
+            All Rights Reserved.
+          </footer>
         </div>
         <div id="delete_patient" class="modal fade delete-modal" role="dialog">
           <div class="modal-dialog modal-dialog-centered">

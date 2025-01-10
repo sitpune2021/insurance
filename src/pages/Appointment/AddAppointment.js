@@ -290,6 +290,26 @@ const AddAppointment = () => {
             </div>
           )}
         </div>
+        <footer
+          style={{
+            marginTop: "20px",
+            padding: "10px 20px",
+            backgroundColor: "#f1f1f1",
+            textAlign: "center",
+            fontSize: "14px",
+          }}
+        >
+          © {new Date().getFullYear()}{" "}
+          <a
+            href="https://sitsolutions.co.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            
+          >
+            S IT Solutions Pvt. Ltd.
+          </a>{" "}
+          All Rights Reserved.
+        </footer>
       </div>
     </div>
   );
